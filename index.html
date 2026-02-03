@@ -3,11 +3,38 @@
   <head>
     <meta charset="UTF-8" />
     <title>Paint 2.0</title>
+    <link href="src/main.css" rel="stylesheet" />
   </head>
   <body>
-    <canvas width="800" height="600"></canvas>
+    <main>
+      <canvas class="paint-c-main-canvas" width="800" height="600"></canvas>
+      <nav class="paint-c-canvas__composer">
+        <button data-tool="select" aria-pressed="true">Select</button>
+        <fieldset class="paint-c-canvas__composer--tool-shapes">
+          <legend>Shapes</legend>
+          <button data-tool="rect">Rectangle</button>
+          <button data-tool="circle">Circle</button>
+        </fieldset>
+        <fieldset class="paint-c-canvas__composer--tool-options">
+          <legend>Options</legend>
+          <label>
+            Color
+            <input type="color" />
+          </label>
+          <label>
+            Size
+            <input type="range" min="1" max="20" value="1" />
+          </label>
+        </fieldset>
+      </nav>
+    </main>
 
-    <script type="module" src="./dist/index.js"></script>
+    <script type="module" src="./dist/main.js"></script>
+
+    <script>
+      window.IS_DEV = true;
+      if (window.IS_DEV) document.documentElement.classList.add("dev");
+    </script>
     <script src="./debug/overlay.js"></script>
   </body>
 </html>
