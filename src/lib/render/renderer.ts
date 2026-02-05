@@ -1,6 +1,10 @@
 import { createshape } from "../abstract/createShape.js";
 import { type Shape } from "../abstract/Shape.js";
 import type { ShapeOptions } from "../abstract/types.js";
+import {
+  getRelativeMousePosition,
+  isMouseInsideCanvas,
+} from "../utils/coords.js";
 
 export class CanvasRenderer {
   private canvas: HTMLCanvasElement;
@@ -53,7 +57,9 @@ export class CanvasRenderer {
     this.redraw();
   }
 
-  placeShape(options: Partial<ShapeOptions> & { kind: ShapeOptions["kind"] }): Shape | null {
+  placeShape(
+    options: Partial<ShapeOptions> & { kind: ShapeOptions["kind"] },
+  ): Shape | null {
     const full: ShapeOptions = {
       kind: options.kind,
       position: options.position ?? {
@@ -69,6 +75,19 @@ export class CanvasRenderer {
     this.redraw();
     return shape;
   }
+
+  handleClickEvent = (evt: MouseEvent) => {
+    if (!isMouseInsideCanvas(evt, this.canvas)) return;
+
+    const localCoordinates = getRelativeMousePosition(evt, this.canvas);
+
+    this.placeShape({
+      kind: "circle",
+      color: "green",
+      size: 20,
+      position: localCoordinates,
+    });
+  };
 
   getWidth(): number {
     return Math.floor(this.canvas.getBoundingClientRect().width);
