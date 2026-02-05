@@ -2,27 +2,47 @@ import { addClickListener } from "./lib/utils/events.js";
 import { CanvasRenderer } from "./lib/render/renderer.js";
 
 export function initCanvas() {
+  const DEFAULT_COLOR = "green";
+  const DEFAULT_SIZE = 20;
+  const DEFAULT_KIND = "rectangle";
+
   const canvas = document.querySelector("canvas") as HTMLCanvasElement | null;
-  if (!canvas) {
+  const toolbar = document.querySelector("nav") as HTMLElement | null;
+  if (!canvas || !toolbar) {
     throw new Error("Canvas not found");
   }
 
-  const renderer = new CanvasRenderer(canvas);
+  const renderer = new CanvasRenderer(
+    canvas,
+    DEFAULT_COLOR,
+    DEFAULT_SIZE,
+    DEFAULT_KIND,
+  );
 
-  const clearBtn = document.getElementById('clear-canvas-btn')
-  if(clearBtn) {
+  const clearBtn = document.getElementById("clear-canvas-btn");
+  if (clearBtn) {
     clearBtn.addEventListener("click", () => {
-      console.log()
-      const ctx = canvas.getContext("2d")
+      console.log();
+      const ctx = canvas.getContext("2d");
       if (ctx) {
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
       }
 
-      renderer.clearObjects()
-    })
+      renderer.clearObjects();
+    });
   }
 
-  const removeClick = addClickListener(canvas, renderer.handleClickEvent);
+  const removeClickCanvas = addClickListener(
+    canvas,
+    renderer.handleClickEventCanvas,
+  );
+  const removeClickToolbar = addClickListener(
+    toolbar,
+    renderer.handleClickEventToolbar,
+  );
 
-  return () => removeClick();
+  return () => {
+    removeClickCanvas();
+    removeClickToolbar();
+  };
 }
