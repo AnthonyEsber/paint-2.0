@@ -9,11 +9,7 @@ export function initCanvas() {
 
   const renderer = new CanvasRenderer(canvas);
 
-  const removeClick = addEventListener('click', () => {
-    const result = renderer.placeShape({kind: 'circle', color: 'green', size: 20, position:{x:20, y:30}})
-  });
+  const removeClick = addClickListener(canvas, renderer.handleClickEvent);
 
-
+  return () => removeClick();
 }
-
-
