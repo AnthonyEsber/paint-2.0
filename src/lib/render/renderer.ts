@@ -96,6 +96,10 @@ export class CanvasRenderer {
     return Math.floor(this.canvas.getBoundingClientRect().height);
   }
 
+  clearObjects() {
+    this.shapes = []
+  }
+
   private redraw(): void {
     const w = this.getWidth();
     const h = this.getHeight();
