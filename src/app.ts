@@ -1,4 +1,4 @@
-import { addClickListener } from "./lib/events/events.js";
+import { addClickListener } from "./lib/utils/events.js";
 import { CanvasRenderer } from "./lib/render/renderer.js";
 
 export function initCanvas() {
