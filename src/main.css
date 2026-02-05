@@ -42,7 +42,7 @@ ul {
 }
 
 :root {
-  overflow: hidden;
+  overflow: scroll;
   height: 100vh;
   color: var(--text);
 }
@@ -68,16 +68,17 @@ main {
   align-items: center;
   justify-content: flex-start;
   gap: var(--gap);
-  padding: 14px 0;
+  padding: 0.75rem 0;
 }
 
 .paint-c-canvas__composer {
-  width: min(1000px, 95vw);
   display: flex;
   align-items: center;
-  gap: var(--gap);
+  justify-content: space-around;
+  width: 100%;
+  max-width: 800px;
 
-  padding: 12px 14px;
+  padding: 0.8rem 1rem;
 
   background: linear-gradient(180deg, var(--panel), rgba(255, 255, 255, 0.55));
   border: 1px solid var(--border);
@@ -89,9 +90,8 @@ main {
 .paint-c-canvas__composer fieldset {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 0.5rem;
 
-  padding: 10px 12px;
   border-radius: var(--radius-md);
   border: 1px solid var(--border);
   background: rgba(255, 255, 255, 0.55);
@@ -99,7 +99,7 @@ main {
 }
 
 .paint-c-canvas__composer legend {
-  padding: 0 8px;
+  padding: 0 0.4rem;
   font-size: 0.82rem;
   font-weight: 800;
   color: var(--muted);
@@ -111,7 +111,7 @@ main {
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
 
-  padding: 9px 12px;
+  padding: 0.45rem 0.6rem;
   background: linear-gradient(180deg, #ffffff, #f0f0f4);
   color: var(--text);
 
@@ -151,8 +151,8 @@ main {
 
 
 .paint-c-canvas__composer input[type="color"] {
-  width: 44px;
-  height: 32px;
+  width: 3rem;
+  height: 2.5rem;
   padding: 0;
 
   border-radius: 999px;
@@ -176,7 +176,7 @@ main {
 }
 
 .paint-c-canvas__composer input[type="range"] {
-  width: 160px;
+  width: 4rem;
   accent-color: #111;
 }
 
@@ -237,15 +237,15 @@ main {
 
 .paint--debug__overlay {
   position: fixed;
-  top: 12px;
-  right: 12px;
+  top: 0.6rem;
+  right: 0.6rem;
 
-  padding: 10px 12px;
+  padding: 0.5rem 0.6rem;
   border-radius: 12px;
 
   font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
-  font-size: 12px;
+  font-size: 0.6rem;
   line-height: 1.35;
   letter-spacing: 0.01em;
 
@@ -280,7 +280,7 @@ main {
     gap: 10px;
 
     width: 96vw;
-    padding: 10px;
+    padding: 0.5rem;
   }
 
   .paint-c-canvas__composer fieldset {
@@ -288,12 +288,12 @@ main {
     min-width: 0;
     flex-wrap: wrap;
     justify-content: flex-start;
-    gap: 10px;
+    gap: 0.5rem;
   }
 
   .paint-c-canvas__composer button {
     min-height: 40px;
-    padding: 10px 12px;
+    padding: 0.5rem 0.6rem;
   }
 
   .paint-c-canvas__composer fieldset > button {
@@ -311,24 +311,24 @@ main {
   }
 
   main {
-    padding: 10px 0 14px;
+    padding: 0.5rem 0 0.75rem;
     justify-content: flex-start;
   }
 
   .paint-c-main-canvas {
     max-width: 95vw;
-    height: auto;
+    height: 60vh;
   }
 
   .paint--debug__overlay {
     top: auto;
-    bottom: 12px;
-    right: 12px;
+    bottom: 0.6rem;
+    right: 0.6rem;
     left: auto;
 
     max-width: min(320px, 92vw);
-    font-size: 11px;
-    padding: 8px 10px;
+    font-size: 0.5rem;
+    padding: 0.3rem 0.5rem;
     border-radius: 10px;
     opacity: 0.92;
   }
@@ -336,12 +336,12 @@ main {
 
 @media (max-width: 480px) {
   .paint-c-canvas__composer {
-    gap: 8px;
+    gap: 0.4rem;
   }
 
   .paint-c-canvas__composer fieldset {
     flex: 1 1 100%;
-    padding: 10px;
+    padding: 0.5rem;
   }
 
   .paint-c-canvas__composer legend {
