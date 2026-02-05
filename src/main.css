@@ -106,9 +106,6 @@ main {
   letter-spacing: 0.02em;
 }
 
-/* =========================
-   Buttons
-========================= */
 .paint-c-canvas__composer button {
   appearance: none;
   border: 1px solid var(--border);
