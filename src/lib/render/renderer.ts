@@ -1,6 +1,7 @@
 import { createshape } from "../abstract/createShape.js";
 import { type Shape } from "../abstract/Shape.js";
 import type { ShapeOptions } from "../abstract/types.js";
+import type { Circle } from "../shapes/Circle.js";
 import {
   getRelativeMousePosition,
   isMouseInsideCanvas,
@@ -11,8 +12,19 @@ export class CanvasRenderer {
   private ctx: CanvasRenderingContext2D;
   private shapes: Shape[] = [];
   private dpr = 1;
+  private elemColor: string;
+  private size: number;
+  private kind: "circle" | "rectangle"; //TODO: add triangle when impl
 
-  constructor(canvasEl: HTMLCanvasElement) {
+  constructor(
+    canvasEl: HTMLCanvasElement,
+    elemColor: string,
+    size: number,
+    kind: "circle" | "rectangle", //TODO: add triangle when impl
+  ) {
+    this.elemColor = elemColor;
+    this.size = size;
+    this.kind = kind;
     this.canvas = canvasEl;
     const ctx = canvasEl.getContext("2d");
     if (!ctx) {
@@ -76,17 +88,43 @@ export class CanvasRenderer {
     return shape;
   }
 
-  handleClickEvent = (evt: MouseEvent) => {
+  handleClickEventCanvas = (evt: MouseEvent) => {
     if (!isMouseInsideCanvas(evt, this.canvas)) return;
 
     const localCoordinates = getRelativeMousePosition(evt, this.canvas);
 
     this.placeShape({
-      kind: "circle",
-      color: "green",
-      size: 20,
+      kind: this.kind,
+      color: this.elemColor,
+      size: this.size,
       position: localCoordinates,
     });
+  };
+
+  handleClickEventToolbar = (evt: MouseEvent) => {
+    const btn = (evt.target as HTMLElement).closest(
+      "button[data-tool]",
+    ) as HTMLButtonElement | null;
+
+    if (!btn) return;
+
+    const tool = btn.dataset.tool;
+
+    if (tool === "rect") {
+      this.kind = "rectangle";
+    } else if (tool === "circle") {
+      this.kind = "circle";
+    }
+
+    const toolbar = btn.closest("nav");
+    if (!toolbar) return;
+
+    const shapeBtns = toolbar.querySelectorAll(
+      "button[data-tool='rect'], button[data-tool='circle']",
+    );
+    shapeBtns.forEach((btn) => btn.classList.remove("is-active"));
+
+    btn.classList.add("is-active");
   };
 
   getWidth(): number {
@@ -97,7 +135,7 @@ export class CanvasRenderer {
   }
 
   clearObjects() {
-    this.shapes = []
+    this.shapes = [];
   }
 
   private redraw(): void {
