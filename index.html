@@ -4,26 +4,35 @@
     <meta charset="UTF-8" />
     <title>Paint 2.0</title>
     <link href="src/main.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="./src/assets/palette.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <main>
       <canvas class="paint-c-main-canvas" width="800" height="600"></canvas>
       <nav class="paint-c-canvas__composer">
-        <button data-tool="select" aria-pressed="true">Select</button>
+        <button class="select-btn" data-tool="select" aria-pressed="true">
+          Select
+        </button>
         <fieldset class="paint-c-canvas__composer--tool-shapes">
-          <legend>Shapes</legend>
-          <button data-tool="rect">Rectangle</button>
-          <button data-tool="circle">Circle</button>
+          <legend class="shapes-legend">Shapes</legend>
+          <button data-tool="rect" class="rectangle-btn">Rectangle</button>
+          <button data-tool="circle" class="circle-btn">Circle</button>
         </fieldset>
         <fieldset class="paint-c-canvas__composer--tool-options">
-          <legend>Options</legend>
-          <label>
+          <legend class="options-legend">Options</legend>
+          <label for="color-picker">
             Color
-            <input type="color" />
+            <input id="color-picker" type="color" />
           </label>
-          <label>
+          <label for="size-input">
             Size
-            <input type="range" min="1" max="20" value="1" />
+            <input id="size-input" type="range" min="1" max="20" value="1" />
           </label>
         </fieldset>
       </nav>
@@ -35,6 +44,6 @@
       window.IS_DEV = true;
       if (window.IS_DEV) document.documentElement.classList.add("dev");
     </script>
-    <script src="./debug/overlay.js"></script>
+    <script src="./debug/overlay.ts"></script>
   </body>
 </html>
