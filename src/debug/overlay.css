@@ -10,6 +10,11 @@
   z-index: 9999;
 }
 
-/* html:not(.dev) .paint--debug__overlay {
+.paint--debug__overlay button {
+  pointer-events: auto; /* button can be clicked */
+  cursor: pointer;
+}
+
+html:not(.dev) .paint--debug__overlay {
   display: none;
-} */
+}
