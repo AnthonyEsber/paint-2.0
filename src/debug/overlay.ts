@@ -1,7 +1,7 @@
 (function () {
-  if (!window.IS_DEV) return;
-
   const canvas = document.querySelector("canvas");
+
+  console.log(canvas);
 
   if (!canvas) return;
 
