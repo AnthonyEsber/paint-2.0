@@ -1,4 +1,5 @@
-import type { PointData } from "./types.js";
+import type { Point2d } from "../abstract/types.js";
+
 
 export function isMouseInsideCanvas(
   evt: MouseEvent,
@@ -16,7 +17,7 @@ export function isMouseInsideCanvas(
 export function getRelativeMousePosition(
   evt: MouseEvent,
   element: HTMLElement,
-): PointData {
+): Point2d {
   const rect = element.getBoundingClientRect();
 
   return {
