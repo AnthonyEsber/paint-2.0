@@ -13,6 +13,7 @@
     />
   </head>
   <body>
+
     <main>
       <canvas class="paint-c-main-canvas" width="800" height="600"></canvas>
       <nav class="paint-c-canvas__composer">
@@ -44,6 +45,6 @@
       window.IS_DEV = true;
       if (window.IS_DEV) document.documentElement.classList.add("dev");
     </script>
-    <script src="./debug/overlay.ts"></script>
+    <script type="module" src="./dist/debug/overlay.js"></script>
   </body>
 </html>
