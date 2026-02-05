@@ -42,7 +42,7 @@ ul {
 }
 
 :root {
-  overflow: hidden;
+  overflow: scroll;
   height: 100vh;
   color: var(--text);
 }
@@ -317,7 +317,7 @@ main {
 
   .paint-c-main-canvas {
     max-width: 95vw;
-    height: auto;
+    height: 60vh;
   }
 
   .paint--debug__overlay {
