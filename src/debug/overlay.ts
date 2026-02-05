@@ -1,26 +1,39 @@
 (function () {
   const canvas = document.querySelector("canvas");
-
-  console.log(canvas);
-
   if (!canvas) return;
+  const rect = canvas.getBoundingClientRect();
+  canvas.width = rect.width;
+  canvas.height = rect.height;
 
-  const el = document.createElement("div");
-  el.className = "paint--debug__overlay";
+  const overlay = document.createElement("div");
+  overlay.className = "paint--debug__overlay";
+  document.body.appendChild(overlay);
 
-  document.body.appendChild(el);
+  const info = document.createElement("div");
+  overlay.appendChild(info);
+
+  const clearBtn = document.createElement("button");
+  clearBtn.className = "clear-btn";
+  clearBtn.textContent = "Clear Canvas";
+  overlay.appendChild(clearBtn);
+
+  clearBtn.addEventListener("click", () => {
+    const ctx = canvas.getContext("2d");
+    if (ctx) {
+      ctx.clearRect(0, 0, rect.width, rect.height);
+    }
+  });
 
   let mouseX = 0;
   let mouseY = 0;
-  let rect = canvas.getBoundingClientRect();
 
   window.addEventListener("mousemove", (e) => {
     mouseX = e.clientX - rect.left;
     mouseY = e.clientY - rect.top;
   });
 
-  function render() {
-    el.textContent = `
+function render() {
+    info.textContent = `
     canvas:
     css: ${Math.round(rect.width)} x ${Math.round(rect.height)}
     dpr: ${window.devicePixelRatio}
