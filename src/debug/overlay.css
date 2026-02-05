@@ -1,14 +1,14 @@
 .paint--debug__overlay {
   position: fixed;
-  top: 12px;
-  right: 12px;
+  top: 0.6rem;
+  right: 0.6rem;
 
-  padding: 10px 12px;
+  padding: 0.5rem 0.6rem;
   border-radius: 12px;
 
   font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
     "Courier New", monospace;
-  font-size: 12px;
+  font-size: 0.6rem;
   line-height: 1.35;
   letter-spacing: 0.01em;
 
@@ -42,7 +42,7 @@
 
 .paint--debug__overlay hr {
   border: 0;
-  height: 1px;
-  margin: 8px 0;
+  height: 0.2rem;
+  margin: 0.4rem 0;
   background: rgba(255, 255, 255, 0.12);
 }
