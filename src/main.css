@@ -1,17 +1,38 @@
 @import "./debug/overlay.css";
 @import "./styles/canvas.css";
 
+
+:root {
+  --bg: #e7e7ea;
+  --panel: rgba(255, 255, 255, 0.72);
+  --panel-solid: #f6f6f8;
+
+  --text: #141416;
+  --muted: rgba(20, 20, 22, 0.72);
+
+  --border: rgba(20, 20, 22, 0.12);
+  --border-strong: rgba(20, 20, 22, 0.18);
+
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  --shadow-soft: 0 2px 10px rgba(0, 0, 0, 0.06);
+
+  --radius-sm: 10px;
+  --radius-md: 14px;
+  --radius-lg: 18px;
+
+  --focus: 0 0 0 3px rgba(0, 120, 212, 0.25);
+
+  --accent: #111;
+  --accent-contrast: #fff;
+
+  --gap: 12px;
+}
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
   font-family: "JetBrains Mono", monospace;
-}
-
-body {
-  height: 100vh;
-  font-weight: 700;
-  background-color: #e5e5e7;
 }
 
 body,
@@ -23,7 +44,16 @@ ul {
 :root {
   overflow: hidden;
   height: 100vh;
-  color: #1a1a1a;
+  color: var(--text);
+}
+
+body {
+  height: 100vh;
+  font-weight: 700;
+  background:
+    radial-gradient(1100px 600px at 30% -10%, rgba(255, 255, 255, 0.85), transparent 55%),
+    radial-gradient(900px 500px at 90% 10%, rgba(255, 255, 255, 0.55), transparent 60%),
+    linear-gradient(180deg, #ececf0, var(--bg));
 }
 
 .app {
@@ -32,66 +62,308 @@ ul {
   align-items: center;
 }
 
-.paint-c-canvas__composer {
-  width: min(1000px, 95vw);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-
-  padding: 10px 12px;
-  border: 1px solid #000;
-  border-radius: 10px;
-  background: #f5f5f7;
-}
-
-.paint-c-canvas__composer fieldset {
-  border: 1px solid #000;
-  border-radius: 10px;
-  padding: 8px 10px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.paint-c-canvas__composer legend {
-  padding: 0 6px;
-  font-weight: 700;
-}
-
-.paint-c-canvas__composer button {
-   border: 1px solid #000;
-   background: #fff;
-   border-radius: 8px;
-   padding: 8px 12px;
-   cursor: pointer;
-}
-
-.paint-c-canvas__composer button.is-active {
-   background: #111;
-   color: #fff;
-}
-
-.paint-c-canvas__composer button:hover {
-   background: #eee;
-}
-
-.paint-c-canvas__composer input[type="color"] {
-   width: 42px;
-   height: 28px;
-   border: 1px solid #000;
-   border-radius: 6px;
-   padding: 0;
-}
-
-.paint-c-canvas__composer input[type="range"] {
-   width: 140px;
-}
-
 main {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-  gap: 12px;
-  padding-top: 12px;
+  gap: var(--gap);
+  padding: 14px 0;
+}
+
+.paint-c-canvas__composer {
+  width: min(1000px, 95vw);
+  display: flex;
+  align-items: center;
+  gap: var(--gap);
+
+  padding: 12px 14px;
+
+  background: linear-gradient(180deg, var(--panel), rgba(255, 255, 255, 0.55));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(10px);
+}
+
+.paint-c-canvas__composer fieldset {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  padding: 10px 12px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: var(--shadow-soft);
+}
+
+.paint-c-canvas__composer legend {
+  padding: 0 8px;
+  font-size: 0.82rem;
+  font-weight: 800;
+  color: var(--muted);
+  letter-spacing: 0.02em;
+}
+
+/* =========================
+   Buttons
+========================= */
+.paint-c-canvas__composer button {
+  appearance: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+
+  padding: 9px 12px;
+  background: linear-gradient(180deg, #ffffff, #f0f0f4);
+  color: var(--text);
+
+  cursor: pointer;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.9) inset, var(--shadow-soft);
+
+  transition:
+    transform 120ms ease,
+    box-shadow 120ms ease,
+    background-color 120ms ease,
+    border-color 120ms ease,
+    color 120ms ease;
+}
+
+.paint-c-canvas__composer button:hover {
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.10);
+}
+
+.paint-c-canvas__composer button:active {
+  transform: translateY(0px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.10);
+}
+
+.paint-c-canvas__composer button:focus-visible {
+  outline: none;
+  box-shadow: var(--focus), 0 6px 14px rgba(0, 0, 0, 0.10);
+}
+
+.paint-c-canvas__composer button.is-active {
+  background: linear-gradient(180deg, #1b1b1f, #0f0f12);
+  color: var(--accent-contrast);
+  border-color: rgba(0, 0, 0, 0.35);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.18);
+}
+
+
+.paint-c-canvas__composer input[type="color"] {
+  width: 44px;
+  height: 32px;
+  padding: 0;
+
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: #fff;
+  box-shadow: var(--shadow-soft);
+  cursor: pointer;
+
+  transition: transform 120ms ease, box-shadow 120ms ease, border-color 120ms ease;
+}
+
+.paint-c-canvas__composer input[type="color"]:hover {
+  transform: translateY(-1px);
+  border-color: var(--border-strong);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.10);
+}
+
+.paint-c-canvas__composer input[type="color"]:focus-visible {
+  outline: none;
+  box-shadow: var(--focus), 0 8px 18px rgba(0, 0, 0, 0.10);
+}
+
+.paint-c-canvas__composer input[type="range"] {
+  width: 160px;
+  accent-color: #111;
+}
+
+.paint-c-canvas__composer input[type="range"]:focus-visible {
+  outline: none;
+  box-shadow: var(--focus);
+  border-radius: 999px;
+}
+
+
+.paint-c-main-canvas {
+  cursor: crosshair;
+
+  border-radius: 14px;
+  border: 1px solid rgba(20, 20, 22, 0.16);
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.85),
+      rgba(245, 245, 247, 0.92)
+    );
+
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.08),
+    0 1px 0 rgba(255, 255, 255, 0.6) inset;
+
+  transition:
+    box-shadow 200ms ease,
+    transform 120ms ease,
+    border-color 120ms ease;
+
+  touch-action: none;
+}
+
+.paint-c-main-canvas:hover {
+  border-color: rgba(20, 20, 22, 0.22);
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.12),
+    0 1px 0 rgba(255, 255, 255, 0.7) inset;
+  transform: translateY(-1px);
+}
+
+.paint-c-main-canvas:focus-visible,
+.paint-c-main-canvas:active {
+  outline: none;
+  border-color: #111;
+  box-shadow:
+    0 0 0 3px rgba(0, 120, 212, 0.28),
+    0 20px 50px rgba(0, 0, 0, 0.14);
+  transform: translateY(0);
+}
+
+.paint-c-main-canvas.is-drawing {
+  cursor: none;
+}
+
+
+.paint--debug__overlay {
+  position: fixed;
+  top: 12px;
+  right: 12px;
+
+  padding: 10px 12px;
+  border-radius: 12px;
+
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  font-size: 12px;
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+
+  color: rgba(255, 255, 255, 0.92);
+  background: linear-gradient(
+    180deg,
+    rgba(20, 20, 22, 0.65),
+    rgba(20, 20, 22, 0.45)
+  );
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.25),
+    0 1px 0 rgba(255, 255, 255, 0.08) inset;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  pointer-events: none;
+  z-index: 9999;
+
+  max-width: min(360px, 92vw);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+@media (max-width: 768px) {
+  .paint-c-canvas__composer {
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: center;
+    gap: 10px;
+
+    width: 96vw;
+    padding: 10px;
+  }
+
+  .paint-c-canvas__composer fieldset {
+    flex: 1 1 300px;
+    min-width: 0;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 10px;
+  }
+
+  .paint-c-canvas__composer button {
+    min-height: 40px;
+    padding: 10px 12px;
+  }
+
+  .paint-c-canvas__composer fieldset > button {
+    flex: 1 1 110px;
+  }
+
+  .paint-c-canvas__composer input[type="range"] {
+    width: 100%;
+    min-width: 140px;
+    flex: 1 1 160px;
+  }
+
+  .paint-c-canvas__composer input[type="color"] {
+    flex: 0 0 auto;
+  }
+
+  main {
+    padding: 10px 0 14px;
+    justify-content: flex-start;
+  }
+
+  .paint-c-main-canvas {
+    max-width: 95vw;
+    height: auto;
+  }
+
+  .paint--debug__overlay {
+    top: auto;
+    bottom: 12px;
+    right: 12px;
+    left: auto;
+
+    max-width: min(320px, 92vw);
+    font-size: 11px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    opacity: 0.92;
+  }
+}
+
+@media (max-width: 480px) {
+  .paint-c-canvas__composer {
+    gap: 8px;
+  }
+
+  .paint-c-canvas__composer fieldset {
+    flex: 1 1 100%;
+    padding: 10px;
+  }
+
+  .paint-c-canvas__composer legend {
+    font-size: 0.78rem;
+  }
+
+  .paint-c-canvas__composer fieldset > button {
+    flex: 1 1 45%;
+  }
+
+  .paint-c-canvas__composer input[type="range"] {
+    flex: 1 1 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .paint-c-canvas__composer button,
+  .paint-c-main-canvas,
+  .paint-c-canvas__composer input[type="color"] {
+    transition: none;
+  }
 }

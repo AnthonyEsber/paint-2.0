@@ -1,20 +1,44 @@
 .paint-c-main-canvas {
-  cursor: pointer;
+  cursor: crosshair;
 
-  border: 1px solid #000;
-  border-radius: 0.3rem;
-  background-color: #f5f5f7;
+  border-radius: 14px;
+  border: 1px solid rgba(20, 20, 22, 0.16);
 
-  /* box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px; */
+  background:
+    linear-gradient(
+      180deg,
+      rgba(255, 255, 255, 0.85),
+      rgba(245, 245, 247, 0.92)
+    );
 
-  transition: box-shadow 0.3s;
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.08),
+    0 1px 0 rgba(255, 255, 255, 0.6) inset;
+
+  transition:
+    box-shadow 200ms ease,
+    transform 120ms ease,
+    border-color 120ms ease;
 }
 
-main {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+.paint-c-main-canvas:hover {
+  border-color: rgba(20, 20, 22, 0.22);
+  box-shadow:
+    0 18px 45px rgba(0, 0, 0, 0.12),
+    0 1px 0 rgba(255, 255, 255, 0.7) inset;
+  transform: translateY(-1px);
+}
 
-  height: 100%;
+.paint-c-main-canvas:focus-visible,
+.paint-c-main-canvas:active {
+  outline: none;
+  border-color: #111;
+  box-shadow:
+    0 0 0 3px rgba(0, 120, 212, 0.28),
+    0 20px 50px rgba(0, 0, 0, 0.14);
+  transform: translateY(0);
+}
+
+.paint-c-main-canvas.is-drawing {
+  cursor: none;
 }

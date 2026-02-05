@@ -1,20 +1,48 @@
 .paint--debug__overlay {
   position: fixed;
-  top: 0;
-  right: 0;
-  padding: 8px;
-  font-family: monospace;
+  top: 12px;
+  right: 12px;
+
+  padding: 10px 12px;
+  border-radius: 12px;
+
+  font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
   font-size: 12px;
-  background: rgba(0, 0, 0, 0.2);
+  line-height: 1.35;
+  letter-spacing: 0.01em;
+
+  color: rgba(255, 255, 255, 0.92);
+  background: linear-gradient(
+    180deg,
+    rgba(20, 20, 22, 0.65),
+    rgba(20, 20, 22, 0.45)
+  );
+
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  box-shadow:
+    0 12px 30px rgba(0, 0, 0, 0.25),
+    0 1px 0 rgba(255, 255, 255, 0.08) inset;
+
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
   pointer-events: none;
   z-index: 9999;
+
+  max-width: min(360px, 92vw);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
 }
 
-.paint--debug__overlay button {
-  pointer-events: auto; /* button can be clicked */
-  cursor: pointer;
+.paint--debug__overlay strong {
+  font-weight: 800;
+  color: #fff;
 }
 
-html:not(.dev) .paint--debug__overlay {
-  display: none;
+.paint--debug__overlay hr {
+  border: 0;
+  height: 1px;
+  margin: 8px 0;
+  background: rgba(255, 255, 255, 0.12);
 }
