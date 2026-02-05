@@ -1,57 +1,67 @@
-import {
-  getRelativeMousePosition,
-  isMouseInsideCanvas,
-} from "../utils/coords.js";
-import type { PointData } from "../utils/types.js";
-import type { CanvasRenderOptions } from "./types.js";
+
+
+import { createshape } from "../abstract/createShape.js";
+import { type Shape } from "../abstract/Shape.js";
+import type { ShapeOptions } from "../abstract/types.js";
 
 export class CanvasRenderer {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
-  private size: number;
-  private shape: "circle" | "square";
+  private shapes: Shape[] = [];
 
-  constructor(options: CanvasRenderOptions) {
-    this.canvas = options.canvas;
+  constructor(canvasEl: HTMLCanvasElement) {
+        this.canvas = canvasEl;
+        const ctx = canvasEl.getContext('2d');
+        if(!ctx) {
+            throw new Error("cant get context from canvas");
+        }
+        this.ctx = ctx;
 
-    const ctx = this.canvas.getContext("2d");
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+    };
 
-    if (!ctx) throw new Error("Canvas 2D ctx not available");
+    private resize(): void {
+        const dpr = window.devicePixelRatio ?? 1;
+        const rect = this.canvas.getBoundingClientRect();
+        this.canvas.width = Math.round(rect.width * dpr);
+        this.canvas.height = Math.round(rect.height * dpr);
+        this.ctx.scale(dpr, dpr);
+        this.redraw();
+    };
 
-    this.ctx = ctx;
+    placeShape(options: Partial<ShapeOptions> & { kind: ShapeOptions['kind'] }) : Shape | null{
+        const full: ShapeOptions = {
+            kind: options.kind,
+            position: options.position ?? {
+                x: this.getWidth() / 2,
+                y: this.getHeight() / 2,
+            },
+            color: options.color ?? '#b82f6',
+            size: options.size ?? 40,
+        };
+        const shape = createshape(full);
 
-    this.size = options.size ?? 20;
-    this.shape = options.shape ?? "circle";
-  }
-
-  handleClick = (evt: MouseEvent) => {
-    if (!isMouseInsideCanvas(evt, this.canvas)) return;
-
-    const local = getRelativeMousePosition(evt, this.canvas);
-    this.drawShape(local);
-  };
-
-  //TODO: finish drawShape func
-  private drawShape(p: PointData) {
-    const ctx = this.ctx;
-
-    ctx.fillStyle = "#00441c";
-    ctx.strokeStyle = "#013718"; //TODO: add into constructor
-    ctx.lineWidth = 1.5;
-
-    if (this.shape === "circle") {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, this.size / 2, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.stroke();
-    } else {
-      const half = this.size / 2;
-      ctx.beginPath();
-      ctx.rect(p.x - half, p.y - half, this.size, this.size);
-      ctx.fill();
-      ctx.stroke();
+        this.shapes.push(shape);
+        this.redraw();
+        return shape;
     }
 
-    ctx.fillStyle;
-  }
+    getWidth(): number {
+        return this.canvas.clientWidth;
+    }
+    getHeight(): number {
+        return this.canvas.clientHeight;
+    }
+
+    private redraw(): void {
+        const w = this.getWidth();
+        const h = this.getHeight();
+        this.ctx.clearRect(0, 0, w, h);
+        for(const shape of this.shapes) {
+            shape.draw(this.ctx);
+        }
+    }
+
+
 }
