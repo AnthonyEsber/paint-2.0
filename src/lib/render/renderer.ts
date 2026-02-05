@@ -1,57 +1,89 @@
-import {
-  getRelativeMousePosition,
-  isMouseInsideCanvas,
-} from "../utils/coords.js";
-import type { PointData } from "../utils/types.js";
-import type { CanvasRenderOptions } from "./types.js";
+import { createshape } from "../abstract/createShape.js";
+import { type Shape } from "../abstract/Shape.js";
+import type { ShapeOptions } from "../abstract/types.js";
 
 export class CanvasRenderer {
   private canvas: HTMLCanvasElement;
   private ctx: CanvasRenderingContext2D;
-  private size: number;
-  private shape: "circle" | "square";
+  private shapes: Shape[] = [];
+  private dpr = 1;
 
-  constructor(options: CanvasRenderOptions) {
-    this.canvas = options.canvas;
-
-    const ctx = this.canvas.getContext("2d");
-
-    if (!ctx) throw new Error("Canvas 2D ctx not available");
-
+  constructor(canvasEl: HTMLCanvasElement) {
+    this.canvas = canvasEl;
+    const ctx = canvasEl.getContext("2d");
+    if (!ctx) {
+      throw new Error("cant get context from canvas");
+    }
     this.ctx = ctx;
 
-    this.size = options.size ?? 20;
-    this.shape = options.shape ?? "circle";
+    this.resize();
+
+    let raf = 0;
+    const onResize = () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => this.resize());
+    };
+
+    window.addEventListener("resize", onResize);
   }
 
-  handleClick = (evt: MouseEvent) => {
-    if (!isMouseInsideCanvas(evt, this.canvas)) return;
+  private resize(): void {
+    const dpr = window.devicePixelRatio || 1;
+    this.dpr = dpr;
 
-    const local = getRelativeMousePosition(evt, this.canvas);
-    this.drawShape(local);
-  };
+    const rect = this.canvas.getBoundingClientRect();
+    const cssWidth = Math.max(0, Math.floor(rect.width));
+    const cssHeight = Math.max(0, Math.floor(rect.height));
 
-  //TODO: finish drawShape func
-  private drawShape(p: PointData) {
-    const ctx = this.ctx;
+    const targetW = Math.max(1, Math.round(cssWidth * dpr));
+    const targetH = Math.max(1, Math.round(cssHeight * dpr));
+    if (this.canvas.width !== targetW) this.canvas.width = targetW;
+    if (this.canvas.height !== targetH) this.canvas.height = targetH;
 
-    ctx.fillStyle = "#00441c";
-    ctx.strokeStyle = "#013718"; //TODO: add into constructor
-    ctx.lineWidth = 1.5;
+    this.canvas.style.width = `${cssWidth}px`;
+    this.canvas.style.height = `${cssHeight}px`;
 
-    if (this.shape === "circle") {
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, this.size / 2, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.stroke();
+    if (typeof (this.ctx as any).resetTransform === "function") {
+      (this.ctx as any).resetTransform();
     } else {
-      const half = this.size / 2;
-      ctx.beginPath();
-      ctx.rect(p.x - half, p.y - half, this.size, this.size);
-      ctx.fill();
-      ctx.stroke();
+      this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     }
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-    ctx.fillStyle;
+    this.redraw();
+  }
+
+  placeShape(options: Partial<ShapeOptions> & { kind: ShapeOptions["kind"] }): Shape | null {
+    const full: ShapeOptions = {
+      kind: options.kind,
+      position: options.position ?? {
+        x: this.getWidth() / 2,
+        y: this.getHeight() / 2,
+      },
+      color: options.color ?? "#b82f6",
+      size: options.size ?? 40,
+    };
+    const shape = createshape(full);
+
+    this.shapes.push(shape);
+    this.redraw();
+    return shape;
+  }
+
+  getWidth(): number {
+    return Math.floor(this.canvas.getBoundingClientRect().width);
+  }
+  getHeight(): number {
+    return Math.floor(this.canvas.getBoundingClientRect().height);
+  }
+
+  private redraw(): void {
+    const w = this.getWidth();
+    const h = this.getHeight();
+    this.ctx.clearRect(0, 0, w, h);
+
+    for (const shape of this.shapes) {
+      shape.draw(this.ctx);
+    }
   }
 }
