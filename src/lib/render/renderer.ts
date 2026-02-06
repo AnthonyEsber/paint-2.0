@@ -1,9 +1,7 @@
 import { createshape } from "../abstract/createShape.js";
 import { type Shape } from "../abstract/Shape.js";
 import type { ShapeOptions } from "../abstract/types.js";
-import type { Circle } from "../shapes/Circle.js";
 import {
-  getRelativeMousePosition,
   isMouseInsideCanvas,
 } from "../utils/coords.js";
 
@@ -97,7 +95,13 @@ export class CanvasRenderer {
   handleClickEventCanvas = (evt: MouseEvent) => {
     if (!isMouseInsideCanvas(evt, this.canvas)) return;
 
-    const localCoordinates = getRelativeMousePosition(evt, this.canvas);
+    const rect = this.canvas.getBoundingClientRect();
+    const w = this.getWidth();
+    const h = this.getHeight();
+    const localCoordinates = {
+      x: ((evt.clientX - rect.left) / rect.width) * w,
+      y: ((evt.clientY - rect.top) / rect.height) * h,
+    };
 
     this.placeShape({
       kind: this.kind,
@@ -134,10 +138,10 @@ export class CanvasRenderer {
   };
 
   getWidth(): number {
-    return Math.floor(this.canvas.getBoundingClientRect().width);
+    return Math.floor(this.canvas.width / this.dpr);
   }
   getHeight(): number {
-    return Math.floor(this.canvas.getBoundingClientRect().height);
+    return Math.floor(this.canvas.height / this.dpr);
   }
 
   clearObjects() {
