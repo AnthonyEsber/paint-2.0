@@ -15,6 +15,8 @@ export class CanvasRenderer {
   private elemColor: string;
   private size: number;
   private kind: "circle" | "rectangle"; //TODO: add triangle when impl
+  private raf = 0;
+  private boundOnResize: () => void;
 
   constructor(
     canvasEl: HTMLCanvasElement,
@@ -34,13 +36,17 @@ export class CanvasRenderer {
 
     this.resize();
 
-    let raf = 0;
-    const onResize = () => {
-      cancelAnimationFrame(raf);
-      raf = requestAnimationFrame(() => this.resize());
-    };
+    this.boundOnResize = () => {
+      cancelAnimationFrame(this.raf);
+      this.raf = requestAnimationFrame(() => this.resize());
+    }
 
-    window.addEventListener("resize", onResize);
+    window.addEventListener("resize", this.boundOnResize);
+  }
+
+  destroy(): void {
+    window.removeEventListener("resize", this.boundOnResize);
+    cancelAnimationFrame(this.raf);
   }
 
   private resize(): void {

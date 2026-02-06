@@ -44,5 +44,6 @@ export function initCanvas() {
   return () => {
     removeClickCanvas();
     removeClickToolbar();
+    renderer.destroy();
   };
 }
