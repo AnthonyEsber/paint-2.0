@@ -4,16 +4,15 @@ export interface Point2d {
   y: number;
 }
 
-// forma , cerc sau patrat momentan
-export type shapeKind = "circle" | "rectangle";
-
 // shape types
 export interface ShapeOptions {
-  kind: shapeKind;
+  kind: "circle" | "rectangle";
   color: string;
   position: Point2d;
   size: number;
 }
+
+export type ShapeKind = ShapeOptions["kind"];
 
 export type ToolBarState = {
   tool?: string;
