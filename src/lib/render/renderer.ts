@@ -1,6 +1,6 @@
 import { createshape } from "../abstract/createShape.js";
 import { type Shape } from "../abstract/Shape.js";
-import type { ShapeOptions } from "../abstract/types.js";
+import type { ShapeOptions, ShapeKind } from "../abstract/types.js";
 import {
   isMouseInsideCanvas,
 } from "../utils/coords.js";
@@ -12,7 +12,7 @@ export class CanvasRenderer {
   private dpr = 1;
   private elemColor: string;
   private size: number;
-  private kind: "circle" | "rectangle"; //TODO: add triangle when impl
+  private kind: ShapeKind; //TODO: add triangle when impl
   private raf = 0;
   private boundOnResize: () => void;
 
@@ -20,7 +20,7 @@ export class CanvasRenderer {
     canvasEl: HTMLCanvasElement,
     elemColor: string,
     size: number,
-    kind: "circle" | "rectangle", //TODO: add triangle when impl
+    kind: ShapeKind, //TODO: add triangle when impl
   ) {
     this.elemColor = elemColor;
     this.size = size;
